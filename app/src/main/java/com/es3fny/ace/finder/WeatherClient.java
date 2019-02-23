@@ -1,6 +1,7 @@
 package com.es3fny.ace.finder;
 
 
+import android.app.Activity;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -23,9 +24,9 @@ public class WeatherClient {
         void getData(String[]arr);
     }
 
-    private MainActivity context;
+    private Activity context;
 
-    public WeatherClient(MainActivity context) {
+    public WeatherClient(Activity context) {
         this.context = context;
     }
 

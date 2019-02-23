@@ -96,7 +96,7 @@ public class FirebaseDatabaseHandler {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
-                        callback.afterGettingData(null);
+                        callback.afterGettingData(new ArrayList<String>());
                     }
                 });
 

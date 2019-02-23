@@ -3,6 +3,7 @@ package com.es3fny.ace.finder;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -64,6 +65,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private FirebaseDatabaseHandler firebaseDatabaseHandler;
+    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
         firebaseDatabaseHandler = new FirebaseDatabaseHandler(this);
-
+        activity = this;
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -99,6 +101,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!AppStatus.getInstance(activity).isOnline())
+                {
+                    Toast.makeText(activity, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 firebaseDatabaseHandler.getUserPassword(mEmailView.getText().toString(), new FirebaseDatabaseHandler.FirebaseCallback() {
                     @Override
                     public void afterGettingData(Object data) {
