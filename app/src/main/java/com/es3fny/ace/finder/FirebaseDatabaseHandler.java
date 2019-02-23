@@ -1,7 +1,6 @@
 package com.es3fny.ace.finder;
 
 import android.app.Activity;
-
 import java.util.Iterator;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 
 public class FirebaseDatabaseHandler {
     private Activity context;
@@ -39,10 +37,11 @@ public class FirebaseDatabaseHandler {
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
 
-        StringRequest stringHTTPRequest = new StringRequest(Request.Method.GET, stringRequest,
-                new Response.Listener<String>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+
+                (Request.Method.GET, stringRequest, null, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(JSONObject response) {
                         try {
                             callback.afterGettingData(response);
                         } catch (Exception ignore) {
@@ -50,13 +49,14 @@ public class FirebaseDatabaseHandler {
                         }
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                callback.afterGettingData(null);
-            }
-        });
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        callback.afterGettingData(null);
+                    }
+                });
 
-        mRequestQueue.add(stringHTTPRequest);
+        mRequestQueue.add(jsonObjectRequest);
     }
 
     public void getUserHistory(String userName, final FirebaseCallback callback){
