@@ -16,6 +16,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 
 public class FirebaseDatabaseHandler {
     private Activity context;
@@ -30,7 +31,7 @@ public class FirebaseDatabaseHandler {
     }
 
     public void getUserPassword(String userName, final FirebaseCallback callback){
-        String stringRequest =  DBURL + "Users/" + userName + ".json";
+        String stringRequest =  DBURL + "Users/" + userName + "/password.json";
 
         RequestQueue mRequestQueue;
         Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
@@ -38,26 +39,24 @@ public class FirebaseDatabaseHandler {
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-
-                (Request.Method.GET, stringRequest, null, new Response.Listener<JSONObject>() {
+        StringRequest stringHTTPRequest = new StringRequest(Request.Method.GET, stringRequest,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(String response) {
                         try {
-                            callback.afterGettingData(response.getString("password"));
+                            callback.afterGettingData(response);
                         } catch (Exception ignore) {
                             callback.afterGettingData(null);
                         }
                     }
                 }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        callback.afterGettingData(null);
-                    }
-                });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.afterGettingData(null);
+            }
+        });
 
-        mRequestQueue.add(jsonObjectRequest);
+        mRequestQueue.add(stringHTTPRequest);
     }
 
     public void getUserHistory(String userName, final FirebaseCallback callback){
