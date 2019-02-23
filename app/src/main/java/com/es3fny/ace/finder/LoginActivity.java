@@ -94,7 +94,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -103,13 +102,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 firebaseDatabaseHandler.getUserPassword(mEmailView.getText().toString(), new FirebaseDatabaseHandler.FirebaseCallback() {
                     @Override
                     public void afterGettingData(Object data) {
-                        if(((String)data).equals(mPasswordView.getText().toString())){
-                            User.setUserName(mEmailView.getText().toString());
-                            startActivity(new Intent(getApplicationContext(),MapsActivity.class));
-                        }else if(data == null){
+                        if(data == null){
                             firebaseDatabaseHandler.addNewUser(mEmailView.getText().toString(),mPasswordView.getText().toString());
                             User.setUserName(mEmailView.getText().toString());
                             startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                            finish();
+                        }else if(((String)data).equals(mPasswordView.getText().toString())){
+                            User.setUserName(mEmailView.getText().toString());
+                            startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                            finish();
                         }else{
                             Toast.makeText(LoginActivity.this, "username taken or Wrong Password", Toast.LENGTH_SHORT).show();
                         }
