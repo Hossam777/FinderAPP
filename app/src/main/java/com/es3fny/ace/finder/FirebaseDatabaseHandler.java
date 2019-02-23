@@ -1,6 +1,7 @@
 package com.es3fny.ace.finder;
 
 import android.app.Activity;
+
 import java.util.Iterator;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class FirebaseDatabaseHandler {
     }
 
     public void getUserPassword(String userName, final FirebaseCallback callback){
-        String stringRequest =  DBURL + "Users/" + userName + "/password.json";
+        String stringRequest =  DBURL + "Users/" + userName + ".json";
 
         RequestQueue mRequestQueue;
         Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
@@ -43,7 +44,7 @@ public class FirebaseDatabaseHandler {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            callback.afterGettingData(response);
+                            callback.afterGettingData(response.getString("password"));
                         } catch (Exception ignore) {
                             callback.afterGettingData(null);
                         }
