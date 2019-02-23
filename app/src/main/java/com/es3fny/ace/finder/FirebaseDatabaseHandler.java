@@ -1,5 +1,7 @@
 package com.es3fny.ace.finder;
 
+import android.app.Activity;
+
 import java.util.Iterator;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -16,14 +18,14 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 public class FirebaseDatabaseHandler {
-    private MainActivity context;
+    private Activity context;
     final private String DBURL = "https://finder-c7792.firebaseio.com/";
 
     interface FirebaseCallback{
         void afterGettingData(Object data);
     }
 
-    public FirebaseDatabaseHandler(MainActivity context) {
+    public FirebaseDatabaseHandler(Activity context) {
         this.context = context;
     }
 
