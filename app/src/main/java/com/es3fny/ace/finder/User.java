@@ -1,11 +1,13 @@
 package com.es3fny.ace.finder;
 
+import java.util.ArrayList;
+
 public class User {
     public static User myuser;
     private String userName ;
-    private String [] history;
+    private ArrayList<String> history;
     public static void setUserName(String userName){myuser.userName = userName;}
-    public static void setHistory(String[] history){myuser.history = history;}
-    public static String getStringString(){return myuser.userName;}
-    public static String[] gethistory(){return myuser.history;}
+    public static void setHistory(ArrayList<String> history){myuser.history = history;}
+    public static String getusername(){return myuser.userName;}
+    public static ArrayList<String> gethistory(){return myuser.history;}
 }

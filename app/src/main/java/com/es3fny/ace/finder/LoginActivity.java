@@ -106,10 +106,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         if(((String)data).equals(mPasswordView.getText().toString())){
                             User.setUserName(mEmailView.getText().toString());
                             startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                            finish();
                         }else if(data == null){
                             firebaseDatabaseHandler.addNewUser(mEmailView.getText().toString(),mPasswordView.getText().toString());
                             User.setUserName(mEmailView.getText().toString());
                             startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                            finish();
                         }else{
                             Toast.makeText(LoginActivity.this, "username taken or Wrong Password", Toast.LENGTH_SHORT).show();
                         }
