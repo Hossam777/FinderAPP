@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Button record,history,logout;
     EditText search;
     TextView weatherdata;
+    private ProgressBar spinner;
     Handler handler;
     WeatherClient weatherClient;
     VoiceRecorder voiceRecorder;
@@ -62,6 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         history = findViewById(R.id.history);
         logout = findViewById(R.id.logout);
         search = findViewById(R.id.search);
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
         weatherdata = findViewById(R.id.weatherdata);
         handler = new Handler();
         activity = this;
@@ -152,8 +155,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     firebaseDatabaseHandler.addToUserHistory(User.getUser(),search.getText().toString());
                 }else if(arr[0].equals("404")){
                     Toast.makeText(activity, "Wrong City Name", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(activity, "Sorry server is busy, try again later", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -187,6 +188,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
     public void startRecording() {
+        record.setBackground(getResources().getDrawable(R.drawable.custom_btn_bg2));
         record.setEnabled(false);
         if(!permissionToRecordAccepted)
         {
@@ -201,6 +203,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 try {
                     Thread.sleep(3000);
                     voiceRecorder.stopRecording();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            record.setBackground(getResources().getDrawable(R.drawable.custom_btn_bg));
+                            spinner.setVisibility(View.VISIBLE);
+                        }
+                    });
                     firebaseHandler.UploadRecord(Uri.fromFile(new File(fileName)), new FirebaseHandler.FirebaseCallback() {
                         @Override
                         public void get_download_link(String link) {
@@ -264,6 +273,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             }
                         },"Yes", "No");
                         record.setEnabled(true);
+                        spinner.setVisibility(View.GONE);
                     }
                 });
             }

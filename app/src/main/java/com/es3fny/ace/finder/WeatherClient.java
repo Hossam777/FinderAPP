@@ -60,9 +60,9 @@ public class WeatherClient {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        tbr[0] = "-1";
-                        Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
+                        // TODO: Handle errotbr[0] = "-1";
+                        tbr[0] = "404";
+                        weathercallback.getData(tbr);
                     }
                 });
 
